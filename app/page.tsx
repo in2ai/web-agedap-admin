@@ -1,113 +1,110 @@
-import Image from "next/image";
+"use client";
+import { Relay, finalizeEvent, generateSecretKey, getPublicKey } from "nostr-tools";
+import { useState } from "react";
 
 export default function Home() {
+  /* Section 1 */
+  const [keyPair, setKeyPair] = useState<{
+    sk: string;
+    pk: string;
+  } | null>(null);
+  const [inputKey, setInputKey] = useState("");
+
+  const generateKeyPair = () => {
+    const sk = generateSecretKey();
+    const pk = getPublicKey(sk);
+    setKeyPair({ sk: Buffer.from(sk).toString('base64'), pk });
+  };
+
+  const handleLogin = () => {
+    if (inputKey) {
+      const sk = new Uint8Array(Buffer.from(inputKey,'base64'));
+      setKeyPair({
+        sk: inputKey,
+        pk: getPublicKey(sk),
+      });
+    }
+  };
+
+  /* Section 2 */
+  const [formValues, setFormValues] = useState<{
+    title?: string,
+    summary?: string,
+    requiredSkills?: string[],
+    location?: string,
+    price?: number,
+    currency?: string,
+    period?: string,
+    tags?: string[]
+  } | null>(null);
+  
+  const insertOffer = async (event: React.FormEvent<HTMLFormElement>) => {
+    if(!keyPair?.sk) return;
+
+    event.preventDefault();
+    const workOfferString = JSON.stringify(formValues);
+    console.log(workOfferString);
+
+    const eventTemplate = {
+      kind: 30023,
+      tags: [],
+      content: workOfferString,
+      created_at: Math.floor(Date.now() / 1000),
+    };
+    const sk = new Uint8Array(Buffer.from(keyPair.sk, 'base64'));
+    const signedEvent = finalizeEvent(eventTemplate, sk);
+    console.log("Offer signed");
+
+    const relay = await Relay.connect('wss://relay.damus.io');
+    console.log(`Connected to ${relay.url}`);
+    
+    await relay.publish(signedEvent);
+    relay.close();
+    alert('Offer inserted');
+
+    setFormValues(null);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+    <main>
+      <h1>web-agedap-admin</h1>
+      <section>
+        {
+          keyPair ? (
+            <>
+              <h2>KeyPair</h2>
+              <span>Secret Key: {keyPair.sk}</span><br />
+              <span>Public Key: {keyPair.pk}</span>
+            </>
+          ) : (
+            <>
+              <h2>Generate KeyPair or login</h2>
+              <button onClick={generateKeyPair}>Generate KeyPair</button>
+              <br /><br />
+              <input type="text" placeholder="Secret Key" value={inputKey} onChange={(e) => setInputKey(e.target.value)} /><br />
+              <button onClick={handleLogin}>Login</button>
+            </>
+          )
+        }
+      </section>
+      {
+        keyPair && (
+          <section>
+            <h2>Insert offer</h2>
+            <form onSubmit={insertOffer}>
+              <input type="text" placeholder="Title" value={formValues?.title} onChange={(e) => setFormValues({ ...formValues, title: e.target.value })} /><br />
+              <input type="text" placeholder="Summary" value={formValues?.summary} onChange={(e) => setFormValues({ ...formValues, summary: e.target.value })} /><br />
+              <input type="text" placeholder="Required Skills (separados por coma)" value={formValues?.requiredSkills && formValues?.requiredSkills.join(",")} onChange={(e) => setFormValues({ ...formValues, requiredSkills: e.target.value.split(",") })} /><br />
+              <input type="text" placeholder="Location" value={formValues?.location} onChange={(e) => setFormValues({ ...formValues, location: e.target.value })} /><br />
+              <input type="number" placeholder="Price" value={formValues?.price} onChange={(e) => setFormValues({ ...formValues, price: e.target.valueAsNumber })} /><br />
+              <input type="text" placeholder="Currency" value={formValues?.currency} onChange={(e) => setFormValues({ ...formValues, currency: e.target.value })} /><br />
+              <input type="text" placeholder="Period" value={formValues?.period} onChange={(e) => setFormValues({ ...formValues, period: e.target.value })} /><br />
+              <input type="text" placeholder="Tags (separados por coma)" value={formValues?.tags && formValues?.tags.join(",")} onChange={(e) => setFormValues({ ...formValues, tags: e.target.value.split(",") })} /><br />
+              <button type="submit">Insert offer</button>
+            </form>
+          </section>
+        )
+      }
     </main>
   );
 }
