@@ -1,20 +1,20 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
+import { capitalizeFirst } from './src/plugins/tailwind/capitalize-first';
 
 const config: Config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
+    fontFamily: {},
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      colors: {
+        brandColor: '#3c7c8c',
+        h1Color: '#3c7c8c',
+        defaultAppBgColor: '#ffffff',
+        defaultTextColor: '#333',
+        lightGrey: '#b8c1c9',
       },
     },
   },
-  plugins: [],
+  plugins: [capitalizeFirst],
 };
 export default config;
