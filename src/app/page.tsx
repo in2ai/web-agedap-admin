@@ -1,9 +1,9 @@
 'use client';
 import { Relay, finalizeEvent, generateSecretKey, getPublicKey } from 'nostr-tools';
 import { useState } from 'react';
-import CustomButton from '../components/ui/custom-button/CustomButton';
-import Field from '../components/ui/field/field';
-import ListSelector from '../components/smart/list-selector/list-selector';
+import CustomButton from '@/components/ui/custom-button/CustomButton';
+import Field from '@/components/ui/field/field';
+import ListSelector from '@/components/smart/list-selector/list-selector';
 
 // const RELAY_URL = 'wss://relay.damus.io';
 const RELAY_URL = 'ws://137.184.117.201:8008';
