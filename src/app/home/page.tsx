@@ -1,6 +1,6 @@
 'use client';
 
-import ListSelector from '@/components/smart/list-selector/list-selector';
+import ListSelector, { ListItem } from '@/components/smart/list-selector/list-selector';
 import CustomButton from '@/components/ui/custom-button/CustomButton';
 import Field from '@/components/ui/field/field';
 import { useAuthContext } from '@/context-providers/auth-context';
@@ -9,6 +9,12 @@ import { Relay, finalizeEvent } from 'nostr-tools';
 import { useEffect, useState } from 'react';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
+
+const industries: ListItem[] = [
+  { id: '1', name: 'Inteligencia Artificial', value: 'artificial_intelligence' },
+  { id: '2', name: 'Desarrollo Móviles', value: 'mobile_development' },
+  { id: '3', name: 'Recursos Humanos', value: 'human_resources' },
+];
 
 export default function Home() {
   const router = useRouter();
@@ -39,7 +45,7 @@ export default function Home() {
 
     const eventTemplate = {
       kind: 30023,
-      tags: [['t', offerType]],
+      tags: [['t', industry]],
       content: workOfferString,
       created_at: Math.floor(Date.now() / 1000),
     };
@@ -61,9 +67,9 @@ export default function Home() {
     setFormValues({ ...formValues, [key]: value });
   };
 
-  const [offerType, setOfferType] = useState<string>('artificial_intelligence');
-  const onChangeOfferType = (value: string) => {
-    setOfferType(value);
+  const [industry, setIndustry] = useState<string>('artificial_intelligence');
+  const onChangeIndustry = (value: string) => {
+    setIndustry(value);
   };
 
   const onLogout = () => {
@@ -91,11 +97,9 @@ export default function Home() {
             <span className="flex flex-row items-baseline">
               <span className="pr-3">Industry: </span>
               <ListSelector
-                items={[
-                  { id: '1', name: 'Artificial Inteligence', value: 'artificial_intelligence' },
-                ]}
-                onChange={onChangeOfferType}
-                selectedValue={offerType}
+                items={industries}
+                onChange={onChangeIndustry}
+                selectedValue={industry}
               />
             </span>
           </h1>
