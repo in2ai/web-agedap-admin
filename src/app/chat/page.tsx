@@ -3,7 +3,7 @@
 import { useAuthContext } from '@/context-providers/auth-context';
 import { useRouter } from 'next/navigation';
 import { Relay, finalizeEvent } from 'nostr-tools';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const RELAY_URL = 'ws://137.184.117.201:8008';
 
@@ -15,6 +15,7 @@ export default function Chat() {
   const [currentChat, setCurrentChat] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<any[]>([]);
   const [message, setMessage] = useState('');
+  const messageContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isLoading) return;
@@ -116,6 +117,11 @@ export default function Chat() {
     subscribeToChat();
   }, [currentChat]);
 
+  useEffect(() => {
+    if (messageContainerRef.current)
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+  }, [chatMessages]);
+
   const sendMessage = async () => {
     if (!secretKey) return;
 
@@ -147,7 +153,7 @@ export default function Chat() {
               <span>{currentChat.nostrId}</span>
             </h2>
           </header>
-          <div className="flex-1 bg-[#d5eef4] pb-4">
+          <div ref={messageContainerRef} className="flex-1 overflow-y-scroll bg-[#d5eef4] pb-4">
             <div className="m-2 py-2">
               {chatMessages.map((message, index) => (
                 <div key={index} className="m-2">
