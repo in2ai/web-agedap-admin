@@ -33,10 +33,6 @@ const AuthContextProvider = (props: any) => {
   // LOGIN
   const loginBySecretKey = (secretKey: string) => {
     try {
-      if (secretKey.length !== 64) {
-        alert('Secret key must be 64 bytes long');
-        return;
-      }
       const publicKey = nostrService.getPublicKeyFromSecret(secretKey);
 
       const user: User = { publicKey, secretKey };
