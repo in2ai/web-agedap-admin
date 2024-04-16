@@ -9,7 +9,7 @@ const generateKeyPair = (): KeyPair => {
   const sk = generateSecretKey();
   const pk = getPublicKey(sk);
 
-  const secretKey = Buffer.from(generateSecretKey()).toString('base64');
+  const secretKey = Buffer.from(sk).toString('base64');
   return { secretKey: secretKey, publicKey: pk };
 };
 
