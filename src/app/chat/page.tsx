@@ -66,6 +66,8 @@ export default function Chat() {
       {
         onevent(event) {
           if (event.pubkey != currentChat) {
+            if (chats.find((chat) => chat.nostrId === offer.nostrId)) return;
+
             chats.push({
               nostrId: offer.nostrId,
               pubkey: event.pubkey,
@@ -83,8 +85,8 @@ export default function Chat() {
 
   const subscribeToChat = async () => {
     const relay = await Relay.connect(RELAY_URL);
-    console.log('Authors: ', publicKey, currentChat.pubkey);
-    console.log('Tags: ', currentChat.nostrId);
+    // console.log('Authors: ', publicKey, currentChat?.pubkey);
+    // console.log('Tags: ', currentChat?.nostrId);
     const sub = relay.subscribe(
       [
         {
@@ -109,6 +111,8 @@ export default function Chat() {
   };
 
   useEffect(() => {
+    if (!currentChat) return;
+
     subscribeToChat();
   }, [currentChat]);
 
@@ -129,50 +133,81 @@ export default function Chat() {
     setMessage('');
   };
 
-  return isLogged ? (
-    <main className="flex h-full w-full overflow-hidden">
+  return (
+    <>
       {currentChat ? (
-        <div className="flex flex-col">
-          <h1>Chat with: {currentChat.pubkey}</h1>
-          <h2>{currentChat.nostrId}</h2>
-          <div className="mb-4 max-h-[300px] bg-slate-200">
-            <div className="m-2">
+        <div className="flex h-full w-full flex-col justify-between">
+          <header className="border-b border-dotted border-brandColor bg-[#9dbec5] p-3 ">
+            <h1>
+              <span className="font-bold text-[#527177]">Chat with: </span>
+              <span>{currentChat.pubkey}</span>
+            </h1>
+            <h2>
+              <span className="font-bold text-[#527177]">Offer nostrId: </span>
+              <span>{currentChat.nostrId}</span>
+            </h2>
+          </header>
+          <div className="flex-1 bg-[#d5eef4] pb-4">
+            <div className="m-2 py-2">
               {chatMessages.map((message, index) => (
                 <div key={index} className="m-2">
                   {publicKey === message.fromPublicKey ? (
-                    <p className="text-right text-sm">{message.content}</p>
+                    <div className="flex w-full items-start justify-end">
+                      <div className="flex">
+                        <div className="rounded-bl-md rounded-br-md rounded-tl-md bg-brandColor px-3 py-2">
+                          <div className="text-base text-white">{message.content}</div>
+                        </div>
+                        <div className="h-0 w-0 border-r-[5px] border-t-[11px] border-r-transparent border-t-brandColor"></div>
+                      </div>
+                    </div>
                   ) : (
-                    <p className="text-left text-sm">{message.content}</p>
+                    <div className="flex w-full items-start justify-start">
+                      <div className="flex">
+                        <div className="h-0 w-0 border-l-[5px] border-t-[11px] border-l-transparent border-t-[#86cadb]"></div>
+                        <div className="rounded-bl-md rounded-br-md rounded-tr-md bg-[#86cadb] px-3 py-2">
+                          <span className=" text-base text-brandColor">{message.content}</span>
+                        </div>
+                      </div>
+                    </div>
                   )}
                 </div>
               ))}
             </div>
-            <div className="flex flex-row">
-              <input
-                className="flex-1 rounded-lg border border-slate-400 p-2"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-              <div className="cursor-pointer p-2" onClick={sendMessage}>
-                Send
-              </div>
+          </div>
+          {/* send bloc */}
+          <div className="flex flex-row p-3">
+            <input
+              className="mr-3 flex-1 rounded-lg border border-slate-400 px-3 py-2"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <div
+              className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-md bg-brandColor"
+              onClick={sendMessage}
+            >
+              <i className="bi bi-send-fill text-[1.4rem] text-white" />
             </div>
           </div>
         </div>
       ) : (
         <div className="flex flex-col">
-          <h1>Chats: {chats.length}</h1>
-          <ul>
+          <h1 className="border-b border-dotted border-brandColor p-3 font-bold text-brandColor">
+            Active chats: {chats.length}
+          </h1>
+          <ul className="p-3">
             {chats.map((chat, index) => (
-              <li key={index} className="cursor-pointer" onClick={() => setCurrentChat(chat)}>
+              <li
+                key={index}
+                className="mb-2 flex cursor-pointer flex-col rounded-lg bg-[#98d3e2] p-2"
+                onClick={() => setCurrentChat(chat)}
+              >
+                <span className="font-bold text-brandColor">Chat from pubKey: </span>
                 {chat.pubkey}
               </li>
             ))}
           </ul>
         </div>
       )}
-    </main>
-  ) : (
-    <main className="flex h-full w-full items-center justify-center">Loading page...</main>
+    </>
   );
 }
