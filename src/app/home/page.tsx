@@ -38,24 +38,34 @@ export default function Home() {
     const workOfferString = JSON.stringify(formValues);
     console.log('Inserting offer: ', workOfferString);
 
-    const eventTemplate = {
-      kind: 30023,
-      tags: [['t', industry]],
-      content: workOfferString,
-      created_at: Math.floor(Date.now() / 1000),
-    };
-    const sk = new Uint8Array(Buffer.from(secretKey, 'base64'));
-    const signedEvent = finalizeEvent(eventTemplate, sk);
-    console.log('Offer signed');
+    try {
+      const eventTemplate = {
+        kind: 30023,
+        tags: [
+          ['t', industry],
+          ['d', `${publicKey}: ${formValues?.title}`],
+          ['title', formValues?.title || ''],
+        ],
+        content: workOfferString,
+        created_at: Math.floor(Date.now() / 1000),
+      };
+      const sk = new Uint8Array(Buffer.from(secretKey, 'base64'));
+      const signedEvent = finalizeEvent(eventTemplate, sk);
+      console.log('Offer signed');
 
-    const relay = await Relay.connect(RELAY_URL);
-    console.log(`Connected to ${relay.url}`);
+      const relay = await Relay.connect(RELAY_URL);
+      console.log(`Connected to ${relay.url}`);
 
-    await relay.publish(signedEvent);
-    relay.close();
-    alert('Offer inserted');
+      await relay.publish(signedEvent);
+      console.log('Offer published');
+      relay.close();
+      alert('Offer inserted');
 
-    setFormValues(null);
+      setFormValues(null);
+    } catch (error) {
+      console.error('Error inserting offer: ', error);
+      alert('Error inserting offer');
+    }
   };
 
   const updateForm = (key: string, value: any) => {
