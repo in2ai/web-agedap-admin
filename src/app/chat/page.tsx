@@ -30,6 +30,7 @@ export default function Chat() {
 
     const relay = await Relay.connect(RELAY_URL);
     console.log(`Connected to ${relay.url}`);
+    const userOffers: any[] = [];
     const sub = relay.subscribe(
       [
         {
@@ -39,24 +40,27 @@ export default function Chat() {
       ],
       {
         onevent(event) {
-          fetchChat(event);
+          userOffers.push(event);
         },
         oneose() {
           sub.close();
           relay.close();
+
+          userOffers.forEach((offer) => fetchChat(offer));
         },
       }
     );
   };
 
   const fetchChat = async (event: any) => {
-    console.log(event);
     let offer = JSON.parse(event.content);
     offer.nostrId = event.id;
+    if (event.id == 'd1e30f83fb58bd5bbd6e7f32d1fd72abbc555cd657614a9c6c0ad7f49508788f')
+      console.log('Offer: ', offer.id);
 
     const relay = await Relay.connect(RELAY_URL);
     let currentChat: string = '';
-    const chats: any[] = [];
+    const newChats: any[] = [];
     const sub = relay.subscribe(
       [
         {
@@ -65,20 +69,22 @@ export default function Chat() {
         },
       ],
       {
-        onevent(event) {
-          if (event.pubkey != currentChat) {
-            if (chats.find((chat) => chat.nostrId === offer.nostrId)) return;
+        onevent(event2) {
+          if (event.id == 'd1e30f83fb58bd5bbd6e7f32d1fd72abbc555cd657614a9c6c0ad7f49508788f')
+            console.log('Event2: ', event2);
+          if (event2.pubkey != currentChat) {
+            if (newChats.find((chat) => chat.nostrId === offer.nostrId)) return;
 
-            chats.push({
+            newChats.push({
               nostrId: offer.nostrId,
-              pubkey: event.pubkey,
+              pubkey: event2.pubkey,
             });
-            currentChat = event.pubkey;
+            currentChat = event2.pubkey;
           }
         },
         oneose() {
-          console.log('Chats fetched: ', chats);
-          setChats(chats);
+          setChats((prev) => [...prev, ...newChats]);
+          sub.close();
         },
       }
     );
@@ -208,7 +214,9 @@ export default function Chat() {
                 onClick={() => setCurrentChat(chat)}
               >
                 <span className="font-bold text-brandColor">Chat from pubKey: </span>
-                {chat.pubkey}
+                {chat.pubkey} <br />
+                <span className="font-bold text-brandColor">Offer nostrId: </span>
+                {chat.nostrId}
               </li>
             ))}
           </ul>
