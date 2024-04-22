@@ -1,11 +1,10 @@
 'use client';
 
 import { useAuthContext } from '@/context-providers/auth-context';
+import { environment } from '@/environments/environment';
 import { useRouter } from 'next/navigation';
 import { Relay, finalizeEvent } from 'nostr-tools';
 import { useEffect, useRef, useState } from 'react';
-
-const RELAY_URL = 'ws://137.184.117.201:8008';
 
 export default function Chat() {
   const router = useRouter();
@@ -28,7 +27,7 @@ export default function Chat() {
   const fetchChats = async () => {
     if (!publicKey) return;
 
-    const relay = await Relay.connect(RELAY_URL);
+    const relay = await Relay.connect(environment.RELAY_URL);
     console.log(`Connected to ${relay.url}`);
     const userOffers: any[] = [];
     const sub = relay.subscribe(
@@ -58,7 +57,7 @@ export default function Chat() {
     if (event.id == 'd1e30f83fb58bd5bbd6e7f32d1fd72abbc555cd657614a9c6c0ad7f49508788f')
       console.log('Offer: ', offer.id);
 
-    const relay = await Relay.connect(RELAY_URL);
+    const relay = await Relay.connect(environment.RELAY_URL);
     let currentChat: string = '';
     const newChats: any[] = [];
     const sub = relay.subscribe(
@@ -91,9 +90,7 @@ export default function Chat() {
   };
 
   const subscribeToChat = async () => {
-    const relay = await Relay.connect(RELAY_URL);
-    // console.log('Authors: ', publicKey, currentChat?.pubkey);
-    // console.log('Tags: ', currentChat?.nostrId);
+    const relay = await Relay.connect(environment.RELAY_URL);
     const sub = relay.subscribe(
       [
         {
@@ -139,7 +136,7 @@ export default function Chat() {
     };
     const sk = new Uint8Array(Buffer.from(secretKey, 'base64'));
     const signedEvent = finalizeEvent(eventTemplate, sk);
-    const relay = await Relay.connect(RELAY_URL);
+    const relay = await Relay.connect(environment.RELAY_URL);
     await relay.publish(signedEvent);
     relay.close();
     setMessage('');

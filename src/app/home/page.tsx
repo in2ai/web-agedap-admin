@@ -4,12 +4,9 @@ import ListSelector, { ListItem } from '@/components/smart/list-selector/list-se
 import CustomButton from '@/components/ui/custom-button/CustomButton';
 import Field from '@/components/ui/field/field';
 import { useAuthContext } from '@/context-providers/auth-context';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { environment } from '@/environments/environment';
 import { Relay, finalizeEvent } from 'nostr-tools';
-import { useEffect, useState } from 'react';
-
-const RELAY_URL = 'ws://137.184.117.201:8008';
+import { useState } from 'react';
 
 const industries: ListItem[] = [
   { id: '1', name: 'Inteligencia Artificial', value: 'artificial_intelligence' },
@@ -53,7 +50,7 @@ export default function Home() {
       const signedEvent = finalizeEvent(eventTemplate, sk);
       console.log('Offer signed');
 
-      const relay = await Relay.connect(RELAY_URL);
+      const relay = await Relay.connect(environment.RELAY_URL);
       console.log(`Connected to ${relay.url}`);
 
       await relay.publish(signedEvent);
