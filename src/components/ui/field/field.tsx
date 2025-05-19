@@ -77,11 +77,13 @@ export const Field: React.FC<FieldsetProps> = ({
             placeholder={placeholder ?? ''}
             autoComplete="off"
             ref={inputRef}
-            className={`w-full  px-3 py-2 ${isReadOnly ? 'focus:outline-none' : 'focus:outline-[#a0a0a0]'
-              } rounded-l border-solid border-[#ababab] ${isReadOnly
+            className={`w-full  px-3 py-2 ${
+              isReadOnly ? 'focus:outline-none' : 'focus:outline-[#a0a0a0]'
+            } rounded-l border-solid border-[#ababab] ${
+              isReadOnly
                 ? 'cursor-default border-none bg-[#e9e9e9] text-[#76777a] focus:border-none focus:outline-none'
                 : 'bg-[#f1f1f1]'
-              }`}
+            }`}
             type={type}
             id={id}
             tabIndex={isReadOnly ? -1 : tabIndex}
@@ -105,11 +107,13 @@ export const Field: React.FC<FieldsetProps> = ({
           autoComplete="off"
           readOnly={isReadOnly ? true : false}
           ref={textareaRef}
-          className={`w-full ${isReadOnly ? 'focus:outline-none' : 'focus:outline-[#a0a0a0]'
-            } rounded border-solid border-[#ababab] px-3 py-2 ${isReadOnly
+          className={`w-full ${
+            isReadOnly ? 'focus:outline-none' : 'focus:outline-[#a0a0a0]'
+          } rounded border-solid border-[#ababab] px-3 py-2 ${
+            isReadOnly
               ? 'cursor-default border-none bg-[#e9e9e9] pl-0 pt-0 text-[#76777a] focus:border-none focus:outline-none'
               : 'bg-[#f1f1f1]'
-            }`}
+          }`}
           id={id}
           tabIndex={isReadOnly ? -1 : tabIndex}
           value={inputValue ?? ''}
