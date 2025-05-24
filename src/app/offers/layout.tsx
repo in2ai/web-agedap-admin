@@ -40,10 +40,10 @@ export default function RootLayout({
           <li className="mb-[2px] bg-[#2e6472] px-4 py-2">
             <Link href="/home">Insert offer</Link>
           </li>
-          <li className="mb-[2px] bg-[#2e6472] px-4 py-2">
+          <li className="mb-[2px] bg-[#ffffff] px-4 py-2 text-brandColor">
             <Link href="/offers">My offers</Link>
           </li>
-          <li className="mb-[2px] bg-[#ffffff] px-4 py-2 text-brandColor">
+          <li className="mb-[2px] bg-[#2e6472] px-4 py-2">
             <Link href="/chat">Chats</Link>
           </li>
         </ul>

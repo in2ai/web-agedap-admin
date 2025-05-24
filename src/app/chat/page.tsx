@@ -1,5 +1,6 @@
 'use client';
 
+import CustomButton from '@/components/ui/custom-button/CustomButton';
 import { useAuthContext } from '@/context-providers/auth-context';
 import { environment } from '@/environments/environment';
 import { useRouter } from 'next/navigation';
@@ -112,6 +113,16 @@ export default function Chat() {
     <>
       {currentChat ? (
         <div className="flex h-full w-full flex-col justify-between">
+          <div className="p-5">
+            <CustomButton
+              tabIndex={9}
+              type="button"
+              buttonType="primary"
+              onClick={() => setCurrentChat(null)}
+            >
+              Go back to chats
+            </CustomButton>
+          </div>
           <header className="border-b border-dotted border-brandColor bg-[#9dbec5] p-3 ">
             <h1>
               <span className="font-bold text-[#527177]">Chat with: </span>
