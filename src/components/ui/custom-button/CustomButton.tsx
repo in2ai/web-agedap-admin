@@ -3,7 +3,7 @@ import * as React from 'react';
 type CustomButtonProps = {
   children: React.ReactNode;
   type?: 'button' | 'submit' | 'reset';
-  buttonType?: 'primary' | 'secondary';
+  buttonType?: 'primary' | 'secondary' | 'danger';
   size?: 'small' | 'medium' | 'large';
   hasLargeFont?: boolean;
   tabIndex?: number;
@@ -35,7 +35,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           ? 'bg-[#3c7c8c] opacity-50'
           : buttonType === 'primary'
             ? 'border border-white bg-[#3c7c8c] opacity-100'
-            : 'border border-black bg-white opacity-100'
+            : buttonType === 'secondary'
+              ? 'border border-black bg-white opacity-100'
+              : 'border border-red-500 bg-red-500 opacity-100'
       }`}
     >
       {bootstrapIconClass && <i className={`${bootstrapIconClass} mr-2`} />}
@@ -43,7 +45,11 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         className={`whitespace-nowrap ${
           hasLargeFont ? 'text-[25px]' : 'text-[19px]'
         } font-semibold ${
-          disabled ? 'text-[#3c7c8c]' : buttonType === 'primary' ? 'text-white' : 'text-[#3c7c8c]'
+          disabled
+            ? 'text-[#3c7c8c]'
+            : buttonType === 'primary' || buttonType === 'danger'
+              ? 'text-white'
+              : 'text-[#3c7c8c]'
         }`}
       >
         {children}

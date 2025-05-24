@@ -1,5 +1,6 @@
 'use client';
 
+import CustomButton from '@/components/ui/custom-button/CustomButton';
 import { useAuthContext } from '@/context-providers/auth-context';
 import { environment } from '@/environments/environment';
 import { useRouter } from 'next/navigation';
@@ -29,61 +30,28 @@ export default function Chat() {
 
     const relay = await Relay.connect(environment.RELAY_URL);
     console.log(`Connected to ${relay.url}`);
-    const userOffers: any[] = [];
+    const fetchingChats: any[] = [];
     const sub = relay.subscribe(
       [
         {
-          kinds: [30023],
-          authors: [publicKey],
+          kinds: [3],
+          '#p': [publicKey],
         },
       ],
       {
         onevent(event) {
-          userOffers.push(event);
+          const chat = {
+            pubkey: event.pubkey,
+            chatId: event.tags[2][1],
+          };
+
+          fetchingChats.push(chat);
         },
         oneose() {
           sub.close();
           relay.close();
 
-          userOffers.forEach((offer) => fetchChat(offer));
-        },
-      }
-    );
-  };
-
-  const fetchChat = async (event: any) => {
-    let offer = JSON.parse(event.content);
-    offer.nostrId = event.id;
-    if (event.id == 'd1e30f83fb58bd5bbd6e7f32d1fd72abbc555cd657614a9c6c0ad7f49508788f')
-      console.log('Offer: ', offer.id);
-
-    const relay = await Relay.connect(environment.RELAY_URL);
-    let currentChat: string = '';
-    const newChats: any[] = [];
-    const sub = relay.subscribe(
-      [
-        {
-          kinds: [1],
-          '#t': [offer.nostrId],
-        },
-      ],
-      {
-        onevent(event2) {
-          if (event.id == 'd1e30f83fb58bd5bbd6e7f32d1fd72abbc555cd657614a9c6c0ad7f49508788f')
-            console.log('Event2: ', event2);
-          if (event2.pubkey != currentChat) {
-            if (newChats.find((chat) => chat.nostrId === offer.nostrId)) return;
-
-            newChats.push({
-              nostrId: offer.nostrId,
-              pubkey: event2.pubkey,
-            });
-            currentChat = event2.pubkey;
-          }
-        },
-        oneose() {
-          setChats((prev) => [...prev, ...newChats]);
-          sub.close();
+          setChats(fetchingChats);
         },
       }
     );
@@ -95,8 +63,7 @@ export default function Chat() {
       [
         {
           kinds: [1],
-          authors: [publicKey, currentChat.pubkey],
-          '#t': [currentChat.nostrId],
+          '#t': [currentChat.chatId],
         },
       ],
       {
@@ -130,7 +97,7 @@ export default function Chat() {
 
     const eventTemplate = {
       kind: 1,
-      tags: [['t', currentChat.nostrId]],
+      tags: [['t', currentChat.chatId]],
       content: message,
       created_at: Math.floor(Date.now() / 1000),
     };
@@ -146,14 +113,24 @@ export default function Chat() {
     <>
       {currentChat ? (
         <div className="flex h-full w-full flex-col justify-between">
+          <div className="p-5">
+            <CustomButton
+              tabIndex={9}
+              type="button"
+              buttonType="primary"
+              onClick={() => setCurrentChat(null)}
+            >
+              Go back to chats
+            </CustomButton>
+          </div>
           <header className="border-b border-dotted border-brandColor bg-[#9dbec5] p-3 ">
             <h1>
               <span className="font-bold text-[#527177]">Chat with: </span>
               <span>{currentChat.pubkey}</span>
             </h1>
             <h2>
-              <span className="font-bold text-[#527177]">Offer nostrId: </span>
-              <span>{currentChat.nostrId}</span>
+              <span className="font-bold text-[#527177]">ChatId: </span>
+              <span>{currentChat.chatId}</span>
             </h2>
           </header>
           <div ref={messageContainerRef} className="flex-1 overflow-y-scroll bg-[#d5eef4] pb-4">
@@ -212,8 +189,8 @@ export default function Chat() {
               >
                 <span className="font-bold text-brandColor">Chat from pubKey: </span>
                 {chat.pubkey} <br />
-                <span className="font-bold text-brandColor">Offer nostrId: </span>
-                {chat.nostrId}
+                <span className="font-bold text-brandColor">ChatId: </span>
+                {chat.chatId}
               </li>
             ))}
           </ul>

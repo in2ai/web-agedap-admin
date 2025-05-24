@@ -66,7 +66,7 @@ export const Field: React.FC<FieldsetProps> = ({
       ].join(' ')}
     >
       {label && (
-        <label className={'mb-2 w-full truncate font-medium capitalize-first'} htmlFor={id}>
+        <label className="mb-2 w-full truncate font-medium capitalize-first" htmlFor={id}>
           {label}
           {textUnit ? ` (${textUnit})` : ''}
         </label>
