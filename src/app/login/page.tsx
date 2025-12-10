@@ -5,6 +5,7 @@ import { useAuthContext } from '@/context-providers/auth-context';
 import { useRouter } from 'next/navigation';
 import { generateSecretKey, getPublicKey } from 'nostr-tools';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 export default function Login() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-full w-full items-center justify-center">
+    <div className="flex flex-col gap-8 h-full w-full items-center justify-center">
       <main className="w-full max-w-[30rem] rounded-md border border-lightGrey p-6 shadow-md">
         <h1 className="text-lg font-bold text-brandColor">
           <i className="bi bi-person-fill-lock mr-3 text-[2rem] text-brandColor" />
@@ -49,6 +50,10 @@ export default function Login() {
         <br />
         <CustomButton onClick={handleLogin}>Login</CustomButton>
       </main>
+      <div className="flex flex-row gap-8 w-full justify-center items-center">
+        <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
+        <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
+      </div>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { useAuthContext } from '@/context-providers/auth-context';
 import { environment } from '@/environments/environment';
 import { Relay, finalizeEvent } from 'nostr-tools';
 import { useState } from 'react';
+import Image from 'next/image';
 
 const industries: ListItem[] = [
   { id: '1', name: 'Inteligencia Artificial', value: 'artificial_intelligence' },
@@ -179,6 +180,10 @@ export default function Home() {
               <p className="break-all"> {publicKey}</p>
             </div>
           </section>
+          <div className="flex flex-row gap-8 w-full justify-center items-center mt-5">
+            <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
+            <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
+          </div>
         </div>
       </div>
     </>
