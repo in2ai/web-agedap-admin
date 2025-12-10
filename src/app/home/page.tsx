@@ -180,7 +180,7 @@ export default function Home() {
               <p className="break-all"> {publicKey}</p>
             </div>
           </section>
-          <div className="flex flex-row gap-8 w-full justify-center items-center mt-5">
+          <div className="mt-5 flex w-full flex-row items-center justify-center gap-8">
             <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
             <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
           </div>
