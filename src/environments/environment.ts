@@ -1,3 +1,3 @@
 export const environment = {
-  RELAY_URL: 'ws://137.184.117.201:8008',
+  RELAY_URL: 'wss://agedap.in2ai.com/ws',
 };
