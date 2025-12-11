@@ -3,7 +3,15 @@
 Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación https://github.com/in2ai/agedap-llamatron-demo/
 Desarrolado en Angular y Electron.
 
-## Requisitos
+Enlace a la aplicación: https://agedap.in2ai.com
+
+Si no se tiene usuario hacer click en "Generate new keyPair"
+Copiar la clave privada y guardarla en un sitio seguro ya que es nuestro login.
+<img width="1863" height="627" alt="imagen" src="https://github.com/user-attachments/assets/cdcad2f5-6ae1-44f3-ba78-ec0916904c9a" />
+
+Si ya se tiene clave privada, pegarla en el cuadro de texto para la Secret key y hacer login.
+
+## Requisitos para despliegue
 
 1. Node.js LTS: https://nodejs.org/en
 
