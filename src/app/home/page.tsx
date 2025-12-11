@@ -184,6 +184,9 @@ export default function Home() {
             <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
             <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
           </div>
+          <div className="mt-5 flex w-full flex-row items-center justify-center gap-8 text-sm text-center">
+            <h3>Este proyecto ha sido subvencionado por la Axencia Galega de Innovación (GAIN) con fondos FEDER de la Unión Europea, con el apoyo de la Consellería de Economía e Industria de la Xunta de Galicia, en el marco de su compromiso con el impulso a la investigación, el desarrollo tecnológico y la innovación.</h3>
+          </div>
         </div>
       </div>
     </>
