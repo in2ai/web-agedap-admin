@@ -1,7 +1,7 @@
 ## web-agedap-admin
 
-Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación https://github.com/in2ai/personal-data-app
-Desarrolado en NextJs.
+Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación [https://github.com/in2ai/personal-data-app](https://github.com/in2ai/agedap-llamatron-demo)
+Desarrolado en Angular y Electron.
 
 ## Requisitos
 
