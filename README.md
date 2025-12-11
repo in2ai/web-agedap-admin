@@ -1,4 +1,4 @@
-## agedap-admin
+## Agedap-Admin
 
 Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación https://github.com/in2ai/agedap-client/
 Desarrolado en Angular y Electron.
