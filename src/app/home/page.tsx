@@ -33,7 +33,21 @@ export default function Home() {
     if (!secretKey) return;
 
     event.preventDefault();
-    const workOfferString = JSON.stringify(formValues);
+    // Normalizamos campos y ordenamos las claves en el payload de content
+    const content = {
+      title: formValues?.title ?? '',
+      summary: formValues?.summary ?? '',
+      requiredSkills:
+        formValues?.requiredSkills
+          ?.map((s) => s.trim())
+          .filter((s) => s.length > 0) ?? [],
+      location: formValues?.location ?? '',
+      price: formValues?.price ?? '',
+      currency: formValues?.currency ?? '',
+      period: formValues?.period ?? '',
+      tags: formValues?.tags?.map((t) => t.trim()).filter((t) => t.length > 0) ?? [],
+    };
+    const workOfferString = JSON.stringify(content);
     console.log('Inserting offer: ', workOfferString);
 
     try {
