@@ -1,15 +1,33 @@
-## web-agedap-admin
+## Agedap-Admin
 
-Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación https://github.com/in2ai/agedap-llamatron-demo/
+Front para la inserción y gestión de ofertas para el Relay Nostr de la aplicación https://github.com/in2ai/agedap-client/
 Desarrolado en Angular y Electron.
 
 Enlace a la aplicación: https://agedap.in2ai.com
 
 Si no se tiene usuario hacer click en "Generate new keyPair"
+Si ya se tiene clave privada, pegarla en el cuadro de texto para la Secret key y hacer login.
 Copiar la clave privada y guardarla en un sitio seguro ya que es nuestro login.
 <img width="1863" height="627" alt="imagen" src="https://github.com/user-attachments/assets/cdcad2f5-6ae1-44f3-ba78-ec0916904c9a" />
 
-Si ya se tiene clave privada, pegarla en el cuadro de texto para la Secret key y hacer login.
+
+Al entrar ya podremos hacer varias tareas como:
+1. Introducir una nueva oferta
+<img width="1814" height="885" alt="imagen" src="https://github.com/user-attachments/assets/af692834-d803-43a0-bf25-91de58420b65" />
+
+
+2. Listar las oferta que hemos publicado y ver los detalles de cada una
+<img width="1170" height="585" alt="imagen" src="https://github.com/user-attachments/assets/db28bc88-8a11-4aef-9e82-d19323c2c668" />
+
+
+3. Listar las conversaciones con usuarios
+<img width="1080" height="466" alt="imagen" src="https://github.com/user-attachments/assets/7b44868a-ebc8-4673-8e32-68ce444edbab" />
+
+
+4. Pinchar en ellas para chatear
+<img width="2554" height="1288" alt="imagen" src="https://github.com/user-attachments/assets/82cb283a-7f48-4900-b921-05ea4563d471" />
+
+
 
 ## Requisitos para despliegue
 
