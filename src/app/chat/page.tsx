@@ -5,7 +5,7 @@ import { useAuthContext } from '@/context-providers/auth-context';
 import { environment } from '@/environments/environment';
 import { useRouter } from 'next/navigation';
 import { Relay, finalizeEvent } from 'nostr-tools';
-import { useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 
 export default function Chat() {
   const router = useRouter();
@@ -44,7 +44,6 @@ export default function Chat() {
             pubkey: event.pubkey,
             chatId: event.tags[2][1],
           };
-
           fetchingChats.push(chat);
         },
         oneose() {
@@ -93,7 +92,7 @@ export default function Chat() {
   }, [chatMessages]);
 
   const sendMessage = async () => {
-    if (!secretKey) return;
+    if (!secretKey || !currentChat || !message.trim()) return;
 
     const eventTemplate = {
       kind: 1,
@@ -107,6 +106,11 @@ export default function Chat() {
     await relay.publish(signedEvent);
     relay.close();
     setMessage('');
+  };
+
+  const handleSendMessage = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await sendMessage();
   };
 
   return (
@@ -161,19 +165,22 @@ export default function Chat() {
             </div>
           </div>
           {/* send bloc */}
-          <div className="flex flex-row p-3">
+          <form className="flex flex-row p-3" onSubmit={handleSendMessage}>
             <input
+              type="text"
               className="mr-3 flex-1 rounded-lg border border-slate-400 px-3 py-2"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
             />
-            <div
-              className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-md bg-brandColor"
-              onClick={sendMessage}
+            <button
+              type="submit"
+              className="flex h-14 w-14 items-center justify-center rounded-md bg-brandColor transition-opacity disabled:cursor-not-allowed disabled:opacity-60"
+              disabled={!message.trim()}
+              aria-label="Send message"
             >
               <i className="bi bi-send-fill text-[1.4rem] text-white" />
-            </div>
-          </div>
+            </button>
+          </form>
         </div>
       ) : (
         <div className="flex flex-col">

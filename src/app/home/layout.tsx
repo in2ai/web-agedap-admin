@@ -34,7 +34,7 @@ export default function RootLayout({
       <div className="flex w-[16%] flex-col items-center justify-between bg-brandColor text-lg font-bold text-white ">
         <header className="flex flex-col items-center justify-between p-5">
           <i className="bi bi-person-fill-lock mr-3 text-[2rem] text-white" />
-          <h1>Agdap admin web</h1>
+          <h1>Agedap admin web</h1>
         </header>
         <ul className="mt-10 w-full">
           <li className="mb-[2px] bg-[#ffffff] px-4 py-2 text-brandColor">

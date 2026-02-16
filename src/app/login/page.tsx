@@ -35,7 +35,7 @@ export default function Login() {
       <main className="w-full max-w-[30rem] rounded-md border border-lightGrey p-6 shadow-md">
         <h1 className="text-lg font-bold text-brandColor">
           <i className="bi bi-person-fill-lock mr-3 text-[2rem] text-brandColor" />
-          Welcome to Agdap admin web
+          Welcome to Agedap admin web
         </h1>
         <p className="pb-5">To identify yourself when publishing offers generate a new keypair</p>
         <CustomButton onClick={generateKeyPair}>Generate new keyPair</CustomButton>
