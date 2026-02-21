@@ -34,7 +34,7 @@ export default function RootLayout({
       <div className="sticky top-0 flex w-[16%] flex-col items-center justify-between bg-brandColor text-lg font-bold text-white ">
         <header className="flex flex-col items-center justify-between p-5">
           <i className="bi bi-person-fill-lock mr-3 text-[2rem] text-white" />
-          <h1>Agedap admin web</h1>
+          <h1>Mecopia admin web</h1>
         </header>
         <ul className="mt-10 w-full">
           <li className="mb-[2px] bg-[#2e6472] px-4 py-2">

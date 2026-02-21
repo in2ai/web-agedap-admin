@@ -32,10 +32,14 @@ export default function Login() {
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center gap-8">
+      <div className="mt-5 flex w-full flex-row items-center justify-center gap-8">
+        <Image src="/logo.png" alt="logo" width={64} height={64} />
+        <h1 className="text-2xl font-bold text-center text-brandColor">Mecopia Admin Web</h1>
+      </div>
       <main className="w-full max-w-[30rem] rounded-md border border-lightGrey p-6 shadow-md">
         <h1 className="text-lg font-bold text-brandColor">
           <i className="bi bi-person-fill-lock mr-3 text-[2rem] text-brandColor" />
-          Welcome to Agedap admin web
+          Welcome to Mecopia admin web
         </h1>
         <p className="pb-5">To identify yourself when publishing offers generate a new keypair</p>
         <CustomButton onClick={generateKeyPair}>Generate new keyPair</CustomButton>
@@ -50,13 +54,6 @@ export default function Login() {
         <br />
         <CustomButton onClick={handleLogin}>Login</CustomButton>
       </main>
-      <div className="mt-5 flex w-full flex-row items-center justify-center gap-8">
-        <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
-        <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
-      </div>
-      <div className="flex w-[30rem] flex-row items-center justify-center gap-8 text-sm text-center">
-        <h3>Este proyecto ha sido subvencionado por la Axencia Galega de Innovación (GAIN) con fondos FEDER de la Unión Europea, con el apoyo de la Consellería de Economía e Industria de la Xunta de Galicia, en el marco de su compromiso con el impulso a la investigación, el desarrollo tecnológico y la innovación.</h3>
-      </div>
     </div>
   );
 }

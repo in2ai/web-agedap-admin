@@ -8,8 +8,8 @@ import AuthContextProvider from '@/context-providers/auth-context';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'web-agedap-admin',
-  description: 'web-agedap-admin',
+  title: 'web-mecopia-admin',
+  description: 'web-mecopia-admin',
 };
 
 export default function RootLayout({

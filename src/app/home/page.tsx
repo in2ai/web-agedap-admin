@@ -168,6 +168,10 @@ export default function Home() {
           </section>
         </div>
         <div className="w-1/3 p-5 text-xs">
+          <div className="mb-5 flex w-full flex-row items-center justify-center gap-8">
+            <Image src="/logo.png" alt="logo" width={64} height={64} />
+            <h1 className="text-2xl font-bold text-center text-brandColor">Mecopia Admin Web</h1>
+          </div>
           {/* For dev purposes */}
           <section className="bg-gray-200 p-5 text-gray-500">
             <h1 className="pb-3 font-semibold">For development purposes</h1>
@@ -180,13 +184,6 @@ export default function Home() {
               <p className="break-all"> {publicKey}</p>
             </div>
           </section>
-          <div className="mt-5 flex w-full flex-row items-center justify-center gap-8">
-            <Image src="/FEDER.png" alt="FEDER" width={200} height={200} />
-            <Image src="/XUNTA.png" alt="XUNTA" width={200} height={200} />
-          </div>
-          <div className="mt-5 flex w-full flex-row items-center justify-center gap-8 text-sm text-center">
-            <h3>Este proyecto ha sido subvencionado por la Axencia Galega de Innovación (GAIN) con fondos FEDER de la Unión Europea, con el apoyo de la Consellería de Economía e Industria de la Xunta de Galicia, en el marco de su compromiso con el impulso a la investigación, el desarrollo tecnológico y la innovación.</h3>
-          </div>
         </div>
       </div>
     </>
